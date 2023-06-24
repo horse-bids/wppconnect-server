@@ -12,6 +12,7 @@ export default {
     url: null,
     autoDownload: true,
     uploadS3: false,
+    awsBucketName: null,
     readMessage: true,
     allUnreadOnStart: false,
     listenAcks: true,
@@ -20,6 +21,11 @@ export default {
     onReactionMessage: true,
     onPollResponse: true,
     onRevokedMessage: true,
+    onLabelUpdated: true,
+  },
+  chatwoot: {
+    sendQrCode: true,
+    sendStatus: true,
   },
   archive: {
     enable: false,

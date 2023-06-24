@@ -126,6 +126,9 @@ export default class CreateSessionUtil {
       if (req.serverOptions.webhook.onPollResponse) {
         await this.onPollResponse(client, req);
       }
+      if (req.serverOptions.webhook.onLabelUpdated) {
+        await this.onLabelUpdated(client, req);
+      }
     } catch (e) {
       req.logger.error(e);
     }
@@ -270,6 +273,13 @@ export default class CreateSessionUtil {
       callWebHook(client, req, 'onpollresponse', response);
     });
   }
+  async onLabelUpdated(client: WhatsAppServer, req: Request) {
+    await client.isConnected();
+    await client.onUpdateLabel(async (response: any) => {
+      req.io.emit('onupdatelabel', response);
+      callWebHook(client, req, 'onupdatelabel', response);
+    });
+  }
 
   encodeFunction(data: any, webhook: any) {
     data.webhook = webhook;
@@ -284,13 +294,13 @@ export default class CreateSessionUtil {
   }
 
   getClient(session: any) {
-    let client = clientsArray[session] as any;
+    let client = clientsArray[session];
 
     if (!client)
-      client = (clientsArray as any)[session] = {
+      client = clientsArray[session] = {
         status: null,
         session: session,
-      };
+      } as any;
     return client;
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,18 @@ import {
 } from '../util/functions';
 
 export async function getAllGroups(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.deprecated = true
+     #swagger.summary = 'Deprecated in favor of 'list-chats'
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+   */
   try {
     const response = await req.client.getAllGroups();
 
@@ -35,6 +47,39 @@ export async function getAllGroups(req: Request, res: Response) {
 }
 
 export async function joinGroupByCode(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              inviteCode: {
+                type: "string"
+              }
+            },
+            required: ["inviteCode"]
+          },
+          examples: {
+            "Default": {
+              value: {
+                inviteCode: "5644444"
+              }
+            }
+          }
+        }
+      }
+    }
+   */
   const { inviteCode } = req.body;
 
   if (!inviteCode)
@@ -60,6 +105,46 @@ export async function joinGroupByCode(req: Request, res: Response) {
 }
 
 export async function createGroup(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              participants: {
+                type: "array",
+                items: {
+                  type: "string"
+                }
+              },
+              name: {
+                type: "string"
+              }
+            },
+            required: ["participants", "name"]
+          },
+          examples: {
+            "Default": {
+              value: {
+                participants: ["5521999999999"],
+                name: "Group name"
+              }
+            }
+          }
+        }
+      }
+    }
+   */
   const { participants, name } = req.body;
 
   try {
@@ -95,6 +180,30 @@ export async function createGroup(req: Request, res: Response) {
 }
 
 export async function leaveGroup(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              groupId: { type: "string" }
+            },
+            required: ["groupId"]
+          }
+        }
+      }
+    }
+   */
   const { groupId } = req.body;
 
   try {
@@ -117,6 +226,37 @@ export async function leaveGroup(req: Request, res: Response) {
 }
 
 export async function getGroupMembers(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              groupId: { type: "string" }
+            },
+            required: ["groupId"]
+          },
+          examples: {
+            "Default": {
+              value: {
+                groupId: "<groupId>"
+              }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId } = req.params;
 
   try {
@@ -136,6 +276,39 @@ export async function getGroupMembers(req: Request, res: Response) {
 }
 
 export async function addParticipant(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              groupId: { type: "string" },
+              phone: { type: "string" }
+            },
+            required: ["groupId", "phone"]
+          },
+          examples: {
+            "Default": {
+              value: {
+                groupId: "<groupId>",
+                phone: "5521999999999"
+              }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId, phone } = req.body;
 
   try {
@@ -167,6 +340,39 @@ export async function addParticipant(req: Request, res: Response) {
 }
 
 export async function removeParticipant(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              "groupId": { type: "string" },
+              "phone": { type: "string" }
+            },
+            required: ["groupId", "phone"]
+          },
+          examples: {
+            "Default": {
+              value: {
+                "groupId": "<groupId>",
+                "phone": "5521999999999"
+              }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId, phone } = req.body;
 
   try {
@@ -200,6 +406,39 @@ export async function removeParticipant(req: Request, res: Response) {
 }
 
 export async function promoteParticipant(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              "groupId": { type: "string" },
+              "phone": { type: "string" }
+            },
+            required: ["groupId", "phone"]
+          },
+          examples: {
+            "Default": {
+              value: {
+                "groupId": "<groupId>",
+                "phone": "5521999999999"
+              }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId, phone } = req.body;
 
   try {
@@ -228,6 +467,39 @@ export async function promoteParticipant(req: Request, res: Response) {
 }
 
 export async function demoteParticipant(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              "groupId": { type: "string" },
+              "phone": { type: "string" }
+            },
+            required: ["groupId", "phone"]
+          },
+          examples: {
+            "Default": {
+              value: {
+                "groupId": "<groupId>",
+                "phone": "5521999999999"
+              }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId, phone } = req.body;
 
   try {
@@ -256,6 +528,37 @@ export async function demoteParticipant(req: Request, res: Response) {
 }
 
 export async function getGroupAdmins(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              "groupId": { type: "string" }
+            },
+            required: ["groupId"]
+          },
+          examples: {
+            "Default": {
+              value: {
+                "groupId": "<groupId>"
+              }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId } = req.params;
 
   try {
@@ -279,6 +582,29 @@ export async function getGroupAdmins(req: Request, res: Response) {
 }
 
 export async function getGroupInviteLink(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              groupId: { type: "string" }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId } = req.params;
   try {
     let response = {};
@@ -298,6 +624,29 @@ export async function getGroupInviteLink(req: Request, res: Response) {
 }
 
 export async function revokeGroupInviteLink(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              $groupId: { type: "string" }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId } = req.params;
 
   let response = {};
@@ -322,6 +671,16 @@ export async function revokeGroupInviteLink(req: Request, res: Response) {
 }
 
 export async function getAllBroadcastList(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Misc"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+   */
   try {
     const response = await req.client.getAllBroadcastList();
     return res.status(200).json({ status: 'success', response: response });
@@ -336,6 +695,29 @@ export async function getAllBroadcastList(req: Request, res: Response) {
 }
 
 export async function getGroupInfoFromInviteLink(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              $invitecode: { type: "string" }
+            }
+          }
+        }
+      }
+    }
+   */
   try {
     const { invitecode } = req.body;
     const response = await req.client.getGroupInfoFromInviteLink(invitecode);
@@ -351,6 +733,19 @@ export async function getGroupInfoFromInviteLink(req: Request, res: Response) {
 }
 
 export async function getGroupMembersIds(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.parameters["groupId"] = {
+      schema: '<groupId>'
+     }
+   */
   const { groupId } = req.params;
   let response = {};
   try {
@@ -369,6 +764,30 @@ export async function getGroupMembersIds(req: Request, res: Response) {
 }
 
 export async function setGroupDescription(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              $groupId: { type: "string" },
+              $description: { type: "string" }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId, description } = req.body;
 
   let response = {};
@@ -390,6 +809,31 @@ export async function setGroupDescription(req: Request, res: Response) {
 }
 
 export async function setGroupProperty(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              $groupId: { type: "string" },
+              $property: { type: "string" },
+              $value: { type: "boolean" }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId, property, value = true } = req.body;
 
   let response = {};
@@ -411,6 +855,30 @@ export async function setGroupProperty(req: Request, res: Response) {
 }
 
 export async function setGroupSubject(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              $groupId: { type: "string" },
+              $title: { type: "string" }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId, title } = req.body;
 
   let response = {};
@@ -432,6 +900,30 @@ export async function setGroupSubject(req: Request, res: Response) {
 }
 
 export async function setMessagesAdminsOnly(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              $groupId: { type: "string" },
+              $value: { type: "boolean" }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId, value = true } = req.body;
 
   let response = {};
@@ -453,11 +945,39 @@ export async function setMessagesAdminsOnly(req: Request, res: Response) {
 }
 
 export async function changePrivacyGroup(req: Request, res: Response) {
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              $groupId: { type: "string" },
+              $status: { type: "boolean" }
+            }
+          }
+        }
+      }
+    }
+   */
   const { groupId, status } = req.body;
 
   try {
     for (const group of contactToArray(groupId)) {
-      await req.client.setMessagesAdminsOnly(group, status === 'true');
+      await req.client.setGroupProperty(
+        group,
+        'restrict' as any,
+        status === 'true'
+      );
     }
 
     return res.status(200).json({
@@ -475,7 +995,31 @@ export async function changePrivacyGroup(req: Request, res: Response) {
 }
 
 export async function setGroupProfilePic(req: Request, res: Response) {
-  const { phone, path } = req.body;
+  /**
+     #swagger.tags = ["Group"]
+     #swagger.autoBody=false
+     #swagger.security = [{
+            "bearerAuth": []
+     }]
+     #swagger.parameters["session"] = {
+      schema: 'NERDWHATS_AMERICA'
+     }
+     #swagger.requestBody = {
+      required: true,
+      "@content": {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              $groupId: { type: "string" },
+              $path: { type: "string" }
+            }
+          }
+        }
+      }
+    }
+   */
+  const { groupId, path } = req.body;
 
   if (!path && !req.file)
     return res.status(401).send({
@@ -485,8 +1029,8 @@ export async function setGroupProfilePic(req: Request, res: Response) {
   const pathFile = path || req.file?.path;
 
   try {
-    for (const contato of contactToArray(phone, true)) {
-      await req.client.setGroupIcon(contato, pathFile);
+    for (const contact of contactToArray(groupId, true)) {
+      await req.client.setGroupIcon(contact, pathFile);
     }
 
     return res.status(201).json({
