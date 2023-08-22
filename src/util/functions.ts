@@ -21,6 +21,7 @@ import {
 } from '@aws-sdk/client-s3';
 import api from 'axios';
 import Crypto from 'crypto';
+import { Request } from 'express';
 import fs from 'fs';
 import mimetypes from 'mime-types';
 import os from 'os';
@@ -100,7 +101,7 @@ export function groupNameToArray(group: any) {
 
 export async function callWebHook(
   client: any,
-  req: any,
+  req: Request,
   event: any,
   data: any
 ) {
@@ -144,23 +145,31 @@ async function autoDownload(client: any, req: any, message: any) {
 
         if (
           !config.aws_s3.region ||
-          config.aws_s3.access_key_id ||
+          !config.aws_s3.access_key_id ||
           !config.aws_s3.secret_key
         )
           throw new Error('Please, configure your aws configs');
         const s3Client = new S3Client({ region: config.aws_s3.region });
-        let bucketName = config.webhook?.awsBucketName
-          ? config.webhook?.awsBucketName
+        let bucketName = config.aws_s3.defaultBucketName
+          ? config.aws_s3.defaultBucketName
           : client.session;
         bucketName = bucketName
           .normalize('NFD')
-          .replace(/[\u0300-\u036f]|[-— _.,?!]/g, '')
+          .replace(/[\u0300-\u036f]|[— _.,?!]/g, '')
           .toLowerCase();
+        bucketName =
+          bucketName.length < 3
+            ? bucketName +
+              `${Math.floor(Math.random() * (999 - 100 + 1)) + 100}`
+            : bucketName;
         const fileName = `${
-          config.webhook?.awsBucketName ? client.session + '/' : ''
+          config.aws_s3.defaultBucketName ? client.session + '/' : ''
         }${hashName}.${mime.extension(message.mimetype)}`;
 
-        if (!(await bucketAlreadyExists(bucketName))) {
+        if (
+          !config.aws_s3.defaultBucketName &&
+          !(await bucketAlreadyExists(bucketName))
+        ) {
           await s3Client.send(
             new CreateBucketCommand({
               Bucket: bucketName,
